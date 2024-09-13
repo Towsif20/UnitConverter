@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Unit Conversion</title>
+</head>
+<body>
+    <h1>Unit Conversion</h1>
+
+    <div th:if='${view.equals("tab")}'>
+        <div>
+            <button type="button"><a th:href='@{/home?type=length}'>Length</a></button>
+            <button type="button"><a th:href='@{/home?type=weight}'>Weight</a></button>
+            <button type="button"><a th:href='@{/home?type=temperature}'>Temperature</a></button>
+        </div>
+
+        <!-- Tab content -->
+        <div th:if="${type.equals('length')}" id="length">
+            <h3>Length</h3>
+
+            <form th:action="@{/convert}" method="post">
+                <input type="hidden" name="type" value="length"/>
+                <label for="value">Value:</label>
+                <input type="number" id="value" name="value" required/><br/>
+
+                <label for="sourceUnit">From:</label>
+                <select id="sourceUnit" name="sourceUnit">
+                    <option th:each="unit : ${units}" th:value="${unit}" th:text="${unit.name}"></option>
+                </select>
+
+                <label for="destinationUnit">To:</label>
+                <select id="destinationUnit" name="destinationUnit">
+                    <option th:each="unit : ${units}" th:value="${unit}" th:text="${unit.name}"></option>
+                </select>
+
+                <button type="submit">Convert</button>
+            </form>
+
+        </div>
+
+        <div th:if="${type.equals('weight')}" id="weight">
+            <h3>Weight</h3>
+        </div>
+
+        <div th:if="${type.equals('temperature')}" id="temperature">
+            <h3>Temperature</h3>
+        </div>
+    </div>
+
+<div th:if='${view.equals("converted")}'>
+    <p th:text="|${previous} ${sourceUnit} = ${converted} ${destinationUnit}|"></p>
+</div>
+</body>
+</html>
