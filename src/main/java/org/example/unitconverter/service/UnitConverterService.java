@@ -11,8 +11,10 @@ import java.util.List;
 @Service
 public class UnitConverterService {
 
-    public Double convert(Double value, Unit from, Unit to) {
-        return value * to.getFactor() / from.getFactor();
+    public Double convert(Double value, Unit sourceUnit, Unit destinationUnit) {
+        double baseValue = (value - sourceUnit.getBias()) / sourceUnit.getFactor();
+
+        return (baseValue * destinationUnit.getFactor()) + destinationUnit.getBias();
     }
 
     public List<Unit> getUnitValues(String type) {

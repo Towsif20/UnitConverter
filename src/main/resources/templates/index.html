@@ -6,48 +6,61 @@
 <body>
     <h1>Unit Conversion</h1>
 
-    <div th:if='${view.equals("tab")}'>
-        <div>
-            <button type="button"><a th:href='@{/home?type=length}'>Length</a></button>
-            <button type="button"><a th:href='@{/home?type=weight}'>Weight</a></button>
-            <button type="button"><a th:href='@{/home?type=temperature}'>Temperature</a></button>
-        </div>
+    <div>
+        <button type="button"><a th:href='@{/home?type=length}'>Length</a></button>
+        <button type="button"><a th:href='@{/home?type=weight}'>Weight</a></button>
+        <button type="button"><a th:href='@{/home?type=temperature}'>Temperature</a></button>
+    </div>
 
-        <!-- Tab content -->
-        <div th:if="${type.equals('length')}" id="length">
-            <h3>Length</h3>
+        <div th:if='${view.equals("tab")}'>
+            <div th:if="${type.equals('length')}" id="length">
+                <h3>Length</h3>
+            </div>
+
+            <div th:if="${type.equals('weight')}" id="weight">
+                <h3>Weight</h3>
+            </div>
+
+            <div th:if="${type.equals('temperature')}" id="temperature">
+                <h3>Temperature</h3>
+            </div>
 
             <form th:action="@{/convert}" method="post">
-                <input type="hidden" name="type" value="length"/>
-                <label for="value">Value:</label>
-                <input type="number" id="value" name="value" required/><br/>
+                <input type="hidden" name="type" value="${type}"/>
 
-                <label for="sourceUnit">From:</label>
-                <select id="sourceUnit" name="sourceUnit">
-                    <option th:each="unit : ${units}" th:value="${unit}" th:text="${unit.name}"></option>
-                </select>
+                <div>
+                    <label for="value">Value:</label>
+                    <input type="number" id="value" name="value" required/>
+                </div>
 
-                <label for="destinationUnit">To:</label>
-                <select id="destinationUnit" name="destinationUnit">
-                    <option th:each="unit : ${units}" th:value="${unit}" th:text="${unit.name}"></option>
-                </select>
+                <div>
+                    <label for="sourceUnit">From:</label>
+                    <select id="sourceUnit" name="sourceUnit">
+                        <option th:each="unit : ${units}" th:value="${unit}" th:text="${unit.name}"></option>
+                    </select>
+                </div>
 
-                <button type="submit">Convert</button>
+                <div>
+                    <label for="destinationUnit">To:</label>
+                    <select id="destinationUnit" name="destinationUnit">
+                        <option th:each="unit : ${units}" th:value="${unit}" th:text="${unit.name}"></option>
+                    </select>
+                </div>
+
+                <div>
+                    <button type="submit">Convert</button>
+                </div>
             </form>
-
         </div>
-
-        <div th:if="${type.equals('weight')}" id="weight">
-            <h3>Weight</h3>
-        </div>
-
-        <div th:if="${type.equals('temperature')}" id="temperature">
-            <h3>Temperature</h3>
-        </div>
-    </div>
 
 <div th:if='${view.equals("converted")}'>
     <p th:text="|${previous} ${sourceUnit} = ${converted} ${destinationUnit}|"></p>
+
+    <div>
+        <button>
+            <a th:href='@{/home}'>Reset</a>
+        </button>
+    </div>
 </div>
 </body>
 </html>

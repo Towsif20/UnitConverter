@@ -1,9 +1,6 @@
 package org.example.unitconverter.controller;
 
-import org.example.unitconverter.entity.LengthUnit;
-import org.example.unitconverter.entity.TemperatureUnit;
 import org.example.unitconverter.entity.Unit;
-import org.example.unitconverter.entity.WeightUnit;
 import org.example.unitconverter.service.UnitConverterService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,19 +21,10 @@ public class UnitConverterController {
 
     @GetMapping("/home")
     public String homePage(@RequestParam(defaultValue = "length") String type,
-                           @RequestParam(defaultValue = "tab") String view,
                            Model model) {
-//        Unit fromUnit = LengthUnit.CM;
-//        Unit toUnit = LengthUnit.MM;
-//
-//        Double previous = 25.0;
-//        Double converted = unitConverterService.convert(previous, fromUnit, toUnit);
-//
-//        System.out.println(previous + " " + fromUnit + " = " + converted + " " + toUnit);
-
         List<Unit> units = unitConverterService.getUnitValues(type);
 
-        model.addAttribute("view", view);
+        model.addAttribute("view", "tab");
         model.addAttribute("type", type);
         model.addAttribute("units", units);
 
@@ -44,7 +32,7 @@ public class UnitConverterController {
     }
 
     @PostMapping("/convert")
-    public String convert(@RequestParam  String type,
+    public String convert(@RequestParam String type,
                           @RequestParam Double value,
                           @RequestParam Unit sourceUnit,
                           @RequestParam Unit destinationUnit,
@@ -61,5 +49,10 @@ public class UnitConverterController {
         model.addAttribute("view", "converted");
 
         return "index";
+    }
+
+    @GetMapping("/error")
+    public String error() {
+        return "error";
     }
 }
